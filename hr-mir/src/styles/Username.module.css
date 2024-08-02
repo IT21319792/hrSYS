@@ -4,23 +4,9 @@
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    @apply border-4 border-gray-50 shrink-0 h-3/4 w-[50%] rounded-3xl py-20 px-7 min-w-max;
-    /* padding: 10px; */
-    /* margin: 10px; */
-    /* width: 100%; */
-    /* max-width: 300px; */
-    /* display: flex; */
-    /* justify-content: center; */
-    /* align-items: center;
-    flex-direction: column; */
-    /* border-radius: 10px;
-    transition: all 0.3s ease; */
-    /* &:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-    } */
-
+    @apply border-4 border-gray-50 shrink-0 w-[50%] rounded-3xl py-20 px-7 min-w-max min-h-max;
 }
+
 
 .profile_img {
     @apply border-4 border-gray-100 w-[135px] rounded-full;
@@ -38,4 +24,8 @@
 
 .btn:hover{
     background-color: #6e2375;
+}
+
+input[type="file"] {
+    display: none;
 }
