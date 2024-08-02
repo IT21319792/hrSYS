@@ -5,6 +5,7 @@ import styles from '../styles/Username.module.css'
 import {Toaster } from 'react-hot-toast'
 import {useFormik} from 'formik'
 import {passwordValidate} from '../helper/validate'
+import convertToBase64 from '../helper/convert'
 // import {usernameValidate} from '../helper/validate'
 
 
@@ -17,19 +18,20 @@ export default function Password() {
       email: '',
       username: '',
       password: '',
-      // username: ''
+   
     },
     validate: passwordValidate,
     // validate: usernameValidate,
     validateOnBlur:false,
     validateOnChange:false,
     onSubmit: async values=>{
+      values = await Object.assign(values,{profile: file || ''})
       console.log(values)
     }
   })
 
 const onUpload = async (e)=>{
-  const base64 = '';
+  const base64 = await convertToBase64;
   setFile(base64);
  
 }
@@ -47,7 +49,7 @@ const onUpload = async (e)=>{
           <form className='py-1' onSubmit={formik.handleSubmit}>
             <div className='profile flex justify-center py-4'>
               <label htmlFor="profile">
-              <img src={avatar} className={styles.profile_img} alt='avatar' />
+              <img src={file || avatar} className={styles.profile_img} alt='avatar' />
 
               </label>
               <input type="file" id='profile' name='profile'></input>
