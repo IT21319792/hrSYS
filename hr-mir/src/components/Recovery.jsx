@@ -45,6 +45,7 @@ export default function Recovery() {
                   placeholder="OTP"
                 />
               </div>
+              
               {/* <input {...formik.getFieldProps('username')} className={styles.textbox} type='text' placeholder='Username' /> */}
               <input
                 {...formik.getFieldProps('password')}
