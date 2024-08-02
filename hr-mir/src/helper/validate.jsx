@@ -21,10 +21,15 @@ export async function resetPasswordVerify(values){
     const errors=passwordVerify({},values);
     if(values.password!==values.confirm_pwd){
        errors.exist = toast.error('Password does not match')
+       errors.confirm_pwd = toast.error('Password does not match')
+       
     }
+
 
     return errors
 }
+
+
 
 
 
