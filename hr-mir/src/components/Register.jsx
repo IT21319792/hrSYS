@@ -4,11 +4,11 @@ import avatar from '../assets/profile.png'
 import styles from '../styles/Username.module.css'
 import {Toaster } from 'react-hot-toast'
 import {useFormik} from 'formik'
-import {passwordValidate} from '../helper/validate'
+import {registerValidate} from '../helper/validate'
 import convertToBase64 from '../helper/convert'
 // import {usernameValidate} from '../helper/validate'
 
-
+ 
 export default function Password() {
 
   const [file,setFile]= useState()
@@ -20,7 +20,7 @@ export default function Password() {
       password: '',
    
     },
-    validate: passwordValidate,
+    validate: registerValidate,
     // validate: usernameValidate,
     validateOnBlur:false,
     validateOnChange:false,
