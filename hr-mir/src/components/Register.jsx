@@ -31,7 +31,7 @@ export default function Password() {
   })
 
 const onUpload = async (e)=>{
-  const base64 = await convertToBase64;
+  const base64 = await convertToBase64(e.target.files[0]);
   setFile(base64);
  
 }
@@ -52,7 +52,7 @@ const onUpload = async (e)=>{
               <img src={file || avatar} className={styles.profile_img} alt='avatar' />
 
               </label>
-              <input type="file" id='profile' name='profile'></input>
+              <input onChange={onUpload} type="file" id='profile' name='profile'></input>
             </div>
 
             <div className='textbox flex flex-col items-center gap-6'>
