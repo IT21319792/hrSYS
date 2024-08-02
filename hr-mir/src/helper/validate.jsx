@@ -29,6 +29,13 @@ export async function resetPasswordVerify(values){
 
 
 
+/**validate register form */
+export async function registerValidate(values){
+        const errors= usernameVerify({},values);
+        const passwordErrors = passwordVerify(errors,values);
+
+}
+
 
 
 /** validate password */
@@ -59,6 +66,20 @@ function usernameVerify(error={},values){
         error.username=toast.error('Username must be atleast 5 characters')
     }else if(values.username.includes(' ')){
         error.username=toast.error('Username must not contain spaces')
+    }
+    return error
+}
+
+// validate email
+function emailVerify(error={},values){
+    if(!values.email){
+        error.email=toast.error('Email is required')
+    }else if(values.email.length<5){
+        error.email=toast.error('Email must be atleast 5 characters')
+    }else if(values.email.includes(' ')){
+        error.email=toast.error('Email must not contain spaces')
+    }else if(!/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z][2,4]$/i.test(values.email)){
+        error.email=toast.error('Invalid email')
     }
     return error
 }
