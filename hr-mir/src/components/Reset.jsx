@@ -44,7 +44,7 @@ export default function Reset() {
               <input {...formik.getFieldProps('password')} className={styles.textbox} type='text' placeholder='New Password' />
               <input {...formik.getFieldProps('confirm_pwd')} className={styles.textbox} type='text' placeholder='Re type Password' />
 
-              <button className={styles.btn} type='submit'>SignUp</button>
+              <button className={styles.btn} type='submit'>Reset</button>
 
             </div>
 
