@@ -1,0 +1,11 @@
+.glass{
+    @apply h-5/6 w-5/6 bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg border-4 border-gray-50 rounded-3xl py-20 px-7 min-w-max min-h-max;
+}
+
+.profile_img{
+    @apply w-40 cursor-pointer rounded-full;
+}
+
+.textbox{
+    @apply w-3/4;
+}
