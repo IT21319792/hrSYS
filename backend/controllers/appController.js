@@ -17,15 +17,26 @@ import ENV from '../config.js';
 //     "profile": "test"
 // }
 
-//middleware for verify user
+// Middleware to verify user
 export async function verifyUser(req, res, next) {
     try {
-        const { username } = req.method == "GET" ? req.query : req.body;
+        // Determine if the username is in the query or body
+        const { username } = req.method === "GET" ? req.query : req.body;
+
+        // Check if the user exists
+        const user = await UserModel.findOne({ username });
+
+        if (!user) {
+            return res.status(404).send({ error: "User not found 22" });
+        }
+
+        // User exists, continue to the next middleware or route handler
+        next();
     } catch (error) {
-        return res.status(404).send({ error: error.message });
-        
+        return res.status(500).send({ error: error.message });
     }
 }
+
 
 
 export async function register(req, res) {
@@ -72,8 +83,6 @@ export async function register(req, res) {
 }
 
 
-
-
     
  //login   
  export async function login(req, res) {
@@ -112,9 +121,34 @@ export async function register(req, res) {
     }
  }
 
+
+
+// Get user
 export async function getUser(req, res) {
-    res.json('get user post req');
+    const { username } = req.params;
+    
+    try {
+        if (!username) {
+            return res.status(400).send({ error: "Invalid Username" });
+        }
+
+        // Find the user by username
+        const user = await UserModel.findOne({ username });
+
+        if (!user) {
+            return res.status(404).send({ error: "User not found" });
+        }
+
+        const { password, ...rest } = user._doc;
+
+        // Return the user data
+        return res.status(200).send({ rest });
+        
+    } catch (error) {
+        return res.status(500).send({ error: error.message });
     }
+}
+
 
 
 export async function updateUser(req, res) {
