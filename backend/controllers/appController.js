@@ -2,6 +2,7 @@
 import UserModel from '../model/User.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import ENV from '../config.js';
 
 
 // example json object for register
@@ -65,41 +66,41 @@ export async function register(req, res) {
 
     
  //login   
-export async function login(req, res) {
-   const { username, password } = req.body;
-   try {
-    UserModel.findOne({username})
-    .then(user => {
-        bcrypt.compare(password, user.password)
-        .then(passwordCheck => {
-            if(!passwordCheck) {
-                return res.status(400).send({ error: "dont have password" });
-
-                //create token
-              const token=  jwt.sign({
-                    userId: user._id,
-                    username: user.username,
-                    
-                }, 'secret',{expiresIn:'1h'});
-
-                return res.status(200).send({message: "Login successful", token: token, username: user.username});
-
-            }
-        })
-        .catch(error => {
+ export async function login(req, res) {
+    const { username, password } = req.body;
+ 
+    try {
+        // Find the user by username
+        const user = await UserModel.findOne({ username });
+ 
+        if (!user) {
+            return res.status(404).send({ error: "Username not found" });
+        }
+ 
+        // Check if the password matches
+        const passwordCheck = await bcrypt.compare(password, user.password);
+ 
+        if (!passwordCheck) {
             return res.status(400).send({ error: "Password is incorrect" });
-        });
+        }
+ 
+        // Create JWT token
+        const token = jwt.sign(
+            {
+                userId: user._id,
+                username: user.username
+            },
+            ENV.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+ 
+        // Send success response with token
+        return res.status(200).send({ message: "Login successful", token, username: user.username });
+ 
+    } catch (error) {
+        return res.status(500).send({ error: error.message });
     }
-    )
-    .catch(error => {
-        return res.status(404).send({ error: "Username not found" });
-    });
-    
-   } catch (error) {
-    return res.status(500).send({ error: error.message });
-   }
-    }
-
+ }
 
 export async function getUser(req, res) {
     res.json('get user post req');
