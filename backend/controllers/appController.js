@@ -39,6 +39,8 @@ export async function verifyUser(req, res, next) {
 
 
 
+
+
 export async function register(req, res) {
     try {
         const { username, password, profile, email } = req.body;
@@ -153,16 +155,17 @@ export async function getUser(req, res) {
 // Update user
 export async function updateUser(req, res) {
     try {
-        const id = req.query.id;
+        //const id = req.query.id;
+        const {userId} = req.user;
 
-        if (!id) {
+        if (!userId) {
             return res.status(400).send({ error: "User ID is required" });
         }
 
         const body = req.body;
 
         // Update user
-        const result = await UserModel.updateOne({ _id: id }, body);
+        const result = await UserModel.updateOne({ _id: userId }, body);
 
         if (result.modifiedCount === 0) {
             return res.status(404).send({ error: "User not found or no changes made" });
@@ -175,6 +178,8 @@ export async function updateUser(req, res) {
     }
 }
 
+
+// Generate OTP
 
 export async function generateOTP(req, res) {
     res.json('generateOTP post req');
