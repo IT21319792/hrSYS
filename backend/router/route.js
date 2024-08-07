@@ -1,9 +1,11 @@
 import { Router } from "express";
 
+
 const router = Router();
 
 // import all controllers
 import * as controller from '../controllers/appController.js';
+import Auth from "../middleware/auth.js";
 
 //post method
 router.route('/register').post(controller.register);
@@ -20,8 +22,8 @@ router.route('/createReset').get(controller.createResetSession);
 
 
 //put method
-router.route('/resetPassword').put(controller.resetPassword);
-router.route('/updateUser').put(controller.updateUser);
+router.route('/resetPassword').put( controller.resetPassword);
+router.route('/updateUser').put(Auth,controller.updateUser);
 
 
 export default router;
