@@ -150,10 +150,31 @@ export async function getUser(req, res) {
 }
 
 
-
+// Update user
 export async function updateUser(req, res) {
-    res.json('register post req');
-     }
+    try {
+        const id = req.query.id;
+
+        if (!id) {
+            return res.status(400).send({ error: "User ID is required" });
+        }
+
+        const body = req.body;
+
+        // Update user
+        const result = await UserModel.updateOne({ _id: id }, body);
+
+        if (result.modifiedCount === 0) {
+            return res.status(404).send({ error: "User not found or no changes made" });
+        }
+
+        return res.status(200).send({ message: "User updated successfully" });
+        
+    } catch (error) {
+        return res.status(500).send({ error: error.message });
+    }
+}
+
 
 export async function generateOTP(req, res) {
     res.json('generateOTP post req');
