@@ -17,6 +17,16 @@ import ENV from '../config.js';
 //     "profile": "test"
 // }
 
+//middleware for verify user
+export async function verifyUser(req, res, next) {
+    try {
+        const { username } = req.method == "GET" ? req.query : req.body;
+    } catch (error) {
+        return res.status(404).send({ error: error.message });
+        
+    }
+}
+
 
 export async function register(req, res) {
     try {
