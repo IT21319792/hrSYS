@@ -15,3 +15,12 @@ try {
     res.status(500).send({ error: "Authentication failed" });
 }
 }
+
+export function localVariables(req, res, next) {
+    req.app.locals = {
+        OTP : null,
+        resetSession : false
+    }
+  
+    next();
+}
