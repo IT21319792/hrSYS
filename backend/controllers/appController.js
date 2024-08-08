@@ -3,6 +3,7 @@ import UserModel from '../model/User.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import ENV from '../config.js';
+import otpGenerator from 'otp-generator';
 
 
 // example json object for register
@@ -182,18 +183,64 @@ export async function updateUser(req, res) {
 // Generate OTP
 
 export async function generateOTP(req, res) {
-    res.json('generateOTP post req');
+  req.app.locals.OTP = await  otpGenerator.generate(6, {
+        upperCaseAlphabets: false,
+        specialChars: false,
+        lowerCaseAlphabets: false
+    });
+    res.status(200).send({code : req.app.locals.OTP});
     }
 
+
+    // Verify OTP
 export async function verifyOTP(req, res) {
-    res.json('verifyOTP post req');
+   const {code} = req.query;
+   if(parseInt(req.app.locals.OTP)=== parseInt(code)){
+    req.app.locals.OTP = null; //reset OTP
+    req.app.locals.resetSession = true; //set reset session
+    return res.status(200).send({message : "OTP verified successfully"});
+   }
+   return res.status(400).send({error : "Invalid OTP"});
     }
 
+
+    // Reset password
 export async function createResetSession(req, res) {
-    res.json('createReset post req');
+   if(req.app.locals.resetSession){
+    req.app.locals.resetSession = false;
+    return res.status(200).send({message : "access granted"});
+   }
+    return res.status(400).send({error : "session expired"});
     }
 
+
+// Reset password
 export async function resetPassword(req, res) {
-    res.json('resetPassword post req');
+    const { username, password } = req.body;
+
+    // Check if reset session exists
+    if (!req.app.locals.resetSession) {
+        return res.status(400).send({ error: "Session expired" });
     }
 
+    try {
+        // Find the user by username
+        const user = await UserModel.findOne({ username });
+        if (!user) {
+            return res.status(400).send({ error: "Invalid Username" });
+        }
+
+        // Hash the new password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Update the user's password
+        await UserModel.updateOne({ username }, { password: hashedPassword });
+
+        // Send success response
+        return res.status(200).send({ message: "Password reset successfully" });
+
+    } catch (error) {
+        // Handle errors
+        return res.status(500).send({ error: error.message });
+    }
+}
