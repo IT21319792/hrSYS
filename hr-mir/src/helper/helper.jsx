@@ -1,4 +1,6 @@
 import axios from 'axios';
+
+axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN;
 //make api req
 
 
@@ -81,11 +83,41 @@ export async function generateOTP(username){
       const {data : {code},status} = await axios.get(`/api/generateOTP`,{params :{username}});
       //send email with otp
       if (status === 200){
-        return Promise.resolve({code})
+        let {data : {email}} = await getUser ({username});
+        let text = `Your Password recovery Code is ${code}. verify and reset your password`;
+        await axios.post(`/api/registerMail`,{userEmail:email,username,subject:"Password Recovery",text})
         }
+
+        return Promise.resolve(code)
         
     } catch (error) {
         return Promise.reject({error: "failed to generate OTP"})
+        
+    }
+}
+
+
+//verify OTP
+export async function verifyOTP({username,code}){
+    try {
+        const {data , status} = await axios.get(`/api/verifyOTP`,{params :{username,code}});
+        return {data,status}
+        
+    } catch (error) {
+        return Promise.reject({error: "failed to verify OTP"})
+        
+    }
+}
+
+
+//reset password
+export async function resetPassword({username,password}){
+    try {
+        const {data , status} = await axios.put(`/api/resetPassword`,{username,password})
+        return Promise.resolve({data , status})
+        
+    } catch (error) {
+        return Promise.reject({error: "failed to reset password"})
         
     }
 }
