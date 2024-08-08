@@ -19,7 +19,7 @@ router.route('/login').post(controller.verifyUser,controller.login);
 //get method
 router.route('/user/:username').get(controller.getUser);
 router.route('/generateOTP').get( controller.verifyUser, localVariables,controller.generateOTP);
-router.route('/verifyOTP').get(controller.verifyOTP);
+router.route('/verifyOTP').get(controller.verifyUser,controller.verifyOTP);
 router.route('/createReset').get(controller.createResetSession); 
 
 
