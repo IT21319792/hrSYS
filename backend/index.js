@@ -11,6 +11,8 @@ const mongoose = require('mongoose');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+
+
 mongoose.connect('mongodb://localhost:27017/hr-mir', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -18,7 +20,8 @@ mongoose.connect('mongodb://localhost:27017/hr-mir', {
     .catch((err) => console.log(err));
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '20mb' }));
+app.use(bodyParser.urlencoded({ limit: '20mb', extended: true }));
 
 app.use('/api/users', userRoutes);
 
