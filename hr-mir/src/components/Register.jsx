@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import avatar from '../assets/profile.png'
 import styles from '../styles/Username.module.css'
-import {Toaster } from 'react-hot-toast'
+import toast, {Toaster } from 'react-hot-toast'
 import {useFormik} from 'formik'
 import {registerValidate} from '../helper/validate'
 import convertToBase64 from '../helper/convert'
 // import {usernameValidate} from '../helper/validate'
+import { registerUser } from '../helper/helper'
 
  
 export default function Password() {
@@ -18,6 +19,8 @@ export default function Password() {
       email: '',
       username: '',
       password: '',
+    profile: 'sdfasf'
+
    
     },
     validate: registerValidate,
@@ -25,16 +28,33 @@ export default function Password() {
     validateOnBlur:false,
     validateOnChange:false,
     onSubmit: async values=>{
-      values = await Object.assign(values,{profile: file || ''})
+      values = await Object.assign(values, {profile: file || 'efawefaef'})
+     let registerPromise= registerUser(values);
       console.log(values)
+      toast.promise(registerPromise,{
+        loading: 'Registering...',
+        success: 'Registered successfully',
+        error: 'Registration failed'
+      }
+      )
+
     }
   })
 
-const onUpload = async (e)=>{
-  const base64 = await convertToBase64(e.target.files[0]);
-  setFile(base64);
- 
-}
+  const MAX_SIZE = 5 * 1024 * 1024; // 5MB limit
+
+  const onUpload = async (e) => {
+      const file = e.target.files[0];
+      
+      if (file.size > MAX_SIZE) {
+          toast.error('File size exceeds the 5MB limit');
+          return;
+      }
+      
+      const base64 = await convertToBase64(file);
+      setFile(base64);
+  }
+  
 
   return (
     <div className='container mx-auto'>
