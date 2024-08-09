@@ -28,10 +28,10 @@ export async function getUser({username}){
 
 
 //register user
-export async function registerUser({credentials}){
+export async function registerUser(credentials){
     try {
-        const {data : {msg}, status} =await axios.post(`/api/register`,{credentials})
-        let {username, email}=credentials;
+        const {data : {msg}, status} =await axios.post(`/api/register`,credentials)
+        let {username, email}= credentials;
 
         //send email
         if(status===201){
