@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import avatar from '../assets/profile.png'
 import styles from '../styles/Username.module.css'
 import toast, {Toaster } from 'react-hot-toast'
@@ -11,8 +11,9 @@ import { registerUser } from '../helper/helper'
 
  
 export default function Password() {
-
-  const [file,setFile]= useState()
+//mona hri unoth func nama Register() kiyala save karanna
+const navigate = useNavigate()  
+const [file,setFile]= useState()
 
   const formik = useFormik({
     initialValues: {
@@ -37,7 +38,7 @@ export default function Password() {
         error: 'Registration failed'
       }
       )
-
+      registerPromise.then(function(){navigate('/')})
     }
   })
 
