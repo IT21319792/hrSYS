@@ -97,15 +97,18 @@ function usernameVerify(error = {}, values) {
 }
 
 // validate email
-function emailVerify(error = {}, values) {
+function emailVerify(values) {
+    const errors = {};
+
     if (!values.email) {
-        error.email = toast.error('Email is required')
+        errors.email = 'Email is required';
     } else if (values.email.length < 5) {
-        error.email = toast.error('Email must be atleast 5 characters')
+        errors.email = toast.error('Email must be atleast 5 characters');
     } else if (values.email.includes(' ')) {
-        error.email = toast.error('Email must not contain spaces')
-    } else if (!/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z][2,4]$/i.test(values.email)) {
-        error.email = toast.error('Invalid email')
+        errors.email = toast.error('Email must not contain spaces');
+    } else if (!/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Z|a-z]{2,7}/.test(values.email)) {
+        errors.email = toast.error('Invalid email address');
     }
-    return error
+
+    return errors;
 }
