@@ -12,4 +12,5 @@ export default function convertToBase64(file) {
     };
   });
   
+  //dtyjdt
 }
