@@ -23,10 +23,13 @@ const [file,setFile]= useState()
     profile: 'sdfasf'
 
    
+
     },
     validate: registerValidate,
     // validate: usernameValidate,
+
     validateOnBlur:false,
+    
     validateOnChange:false,
     onSubmit: async values=>{
       values = await Object.assign(values, {profile: file || 'efawefaef'})

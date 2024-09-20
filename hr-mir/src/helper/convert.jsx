@@ -11,4 +11,5 @@ export default function convertToBase64(file) {
       reject(error);
     };
   });
+  
 }
